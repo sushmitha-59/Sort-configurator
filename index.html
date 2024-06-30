@@ -20,7 +20,7 @@
                     <input id="arr_sz" type="range" min="5" max="100" step=1 value=60>
                 </span>
                 <span id="speed">Speed
-                    <input id="speed_input" type="range" min="20" max="300" stepDown=10 value=60>
+                    <input id="speed_input" type="range" min="20" max="300" step=10 value=60>
                 </span>
             </div>
             <div class="col gap-2 d-sm-flex justify-content-end">
@@ -29,12 +29,12 @@
                 <button type="button" class="btn btn-outline-primary btn-dark insertionSort">Insertion Sort</button>
                 <button type="button" class="btn btn-outline-primary btn-dark quickSort">Quick Sort</button>
                 <button type="button" class="btn btn-outline-primary btn-dark mergeSort">Merge Sort</button>
+                <button type="button" class="btn btn-outline-danger btn-dark cancelButton">Cancel</button>
             </div>
         </div>
     </nav>
 </header>
 <body class="p-3 mb-2 bg-dark text-white">
-    
     <div id="bars" class="flex-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
@@ -44,5 +44,60 @@
     <script src="js_files/merge.js"></script>
     <script src="js_files/quick.js"></script>
     <script src="js_files/selection.js"></script>
+    <script>
+        // Placeholder function to stop the visualization
+        function stopVisualization() {
+            // Implement the logic to stop the visualization here
+            // Clear the visualization content and reset the UI
+            document.getElementById('bars').innerHTML = '';
+
+            // Re-enable all sort buttons and the new array button
+            document.querySelectorAll('.btn-dark').forEach(button => {
+                if (!button.classList.contains('cancelButton')) {
+                    button.disabled = false;
+                }
+            });
+
+            // Re-enable the size and speed inputs
+            document.querySelector('#arr_sz').disabled = false;
+            document.querySelector('#speed_input').disabled = false;
+            document.querySelector('.cancelButton').style.display = 'none';
+        }
+
+        // Function to disable sort buttons and inputs during sorting
+        function disableButtonsAndInputs() {
+            document.querySelectorAll('.btn-dark').forEach(button => {
+                if (!button.classList.contains('cancelButton')) {
+                    button.disabled = true;
+                }
+            });
+            document.querySelector('#arr_sz').disabled = true;
+            document.querySelector('#speed_input').disabled = true;
+            document.querySelector('.cancelButton').style.display = 'block';
+        }
+
+        // Add event listeners to the sort buttons
+        document.querySelectorAll('.btn-dark').forEach(button => {
+            button.addEventListener('click', function() {
+                if (!this.classList.contains('cancelButton') && !this.classList.contains('newArray')) {
+                    disableButtonsAndInputs();
+                }
+            });
+        });
+
+        // Add event listener to the cancel button
+        document.querySelector('.cancelButton').addEventListener('click', stopVisualization);
+
+        // Ensure the new array button re-enables the controls
+        document.querySelector('.newArray').addEventListener('click', function() {
+            document.querySelectorAll('.btn-dark').forEach(button => {
+                if (!button.classList.contains('cancelButton')) {
+                    button.disabled = false;
+                }
+            });
+            document.querySelector('#arr_sz').disabled = false;
+            document.querySelector('#speed_input').disabled = false;
+        });
+    </script>
 </body>
 </html>
